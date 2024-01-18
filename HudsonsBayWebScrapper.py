@@ -9,6 +9,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 url = "https://www.thebay.com/" # The website we are going to scrape
 driver = webdriver.Chrome()
 driver.get(url)
+driver.maximize_window() # Maximize the browser window
+
+# Find the textbox by its HTML attribute (e.g., ID or name) and enter text
+textbox = driver.find_element("id", "textboxId")
+textbox.send_keys("Your search query")
+
+# Find the search button by its HTML attribute and click it
+search_button = driver.find_element("id", "searchButtonId")
+search_button.click()
 
 
 response = requests.get(url) # Get the response from the website
