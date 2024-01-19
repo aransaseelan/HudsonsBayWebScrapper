@@ -1,9 +1,13 @@
 import os 
 import webbrowser
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
+from scroll import scroll
+import time
+
 
 # Open the website in a new browser window
 url = "https://www.thebay.com/" # The website we are going to scrape
@@ -28,6 +32,12 @@ for brand in brands:
     search_button = driver.find_element("name", "search-button")
     search_button.click() 
     
+    
+    last_position = driver.execute_script("return window.pageYOffset;")
+    
+    scroll(driver)
+
+    
     # Wait for search results to load (if necessary)
     WebDriverWait(driver, 10).until(
         lambda d: d.find_elements(By.XPATH, "//a[@href]")
@@ -37,6 +47,6 @@ for brand in brands:
     product_urls = [elem.get_attribute("href") for elem in driver.find_elements(By.XPATH, "//a[@href]")] 
     # elem is the element in the list of elements, get_attribute("href") is the attribute of the element we want to get (href)
     # href is the link to the product page
-    for url in product_urls and any:
-        if 'product' in url:
+    for url in product_urls:
+        if 'product' in url and any(size in url for size in sizes):
             print(url)
