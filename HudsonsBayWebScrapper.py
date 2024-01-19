@@ -9,26 +9,34 @@ from selenium.webdriver.support.ui import WebDriverWait
 url = "https://www.thebay.com/" # The website we are going to scrape
 driver = webdriver.Chrome()
 driver.get(url)
-driver.implicitly_wait(100) # this lets webdriver wait 100 seconds for the website to load
+driver.implicitly_wait(10) # this lets webdriver wait 10 seconds for the website to load
 driver.maximize_window() # Maximize the browser window
-
-driver.implicitly_wait(5) # Wait for 5 seconds
 
 #Brands I would want to search for
 brands = ["Nike", "Lacoste", "Polo Ralph Lauren"]
+
+#Sizes I would want to search for
+sizes = ["Large", "X-Large"]
 
 for brand in brands:
     # Find the textbox by its HTML attribute (e.g., ID or name) and enter text
     textbox = driver.find_element("name", "q")
     textbox.send_keys(brand)
+    
 
     # Find the search button by its HTML attribute and click it
     search_button = driver.find_element("name", "search-button")
     search_button.click() 
-
-    #Clicks each product on the page
-    products = driver.find_elements_by_class_name("product-tile")
     
-    # List to hold all product URLs
-    product_urls = []
-
+    # Wait for search results to load (if necessary)
+    WebDriverWait(driver, 10).until(
+        lambda d: d.find_elements(By.XPATH, "//a[@href]")
+    )
+    
+    # Collecting URLs
+    product_urls = [elem.get_attribute("href") for elem in driver.find_elements(By.XPATH, "//a[@href]")] 
+    # elem is the element in the list of elements, get_attribute("href") is the attribute of the element we want to get (href)
+    # href is the link to the product page
+    for url in product_urls and any:
+        if 'product' in url:
+            print(url)
