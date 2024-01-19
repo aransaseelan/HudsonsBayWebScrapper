@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from Scroll import scroll
+from SideBar import SideBar
 import time
 
 
@@ -31,7 +32,7 @@ for brand in brands:
     # Find the search button by its HTML attribute and click it
     search_button = driver.find_element("name", "search-button")
     search_button.click() 
-        
+    
     scroll(driver) #Uses the scroll function from Scroll.py to scroll down the page
 
     # Wait for search results to load (if necessary)
