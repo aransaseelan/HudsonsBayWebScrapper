@@ -10,7 +10,6 @@ from SideBar import SideBar
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-
 # Open the website in a new browser window
 url = "https://www.thebay.com/" # The website we are going to scrape
 driver = webdriver.Chrome()
@@ -33,20 +32,42 @@ for brand in brands:
     # Find the search button by its HTML attribute and click it
     search_button = driver.find_element("name", "search-button")
     search_button.click() 
-        
-    scroll(driver) #Uses the scroll function from Scroll.py to scroll down the page
-    SideBar(driver) #Uses the SideBar function from SideBar.py to click on the Sales and Clearance button
-
 
     # Wait for search results to load (if necessary)
     WebDriverWait(driver, 10).until(
         lambda d: d.find_elements(By.XPATH, "//a[@href]")
     )
     
-    # Collecting URLs
-    product_urls = [elem.get_attribute("href") for elem in driver.find_elements(By.XPATH, "//a[@href]")] 
-    # elem is the element in the list of elements, get_attribute("href") is the attribute of the element we want to get (href)
-    # href is the link to the product page
-    for url in product_urls:
-        if 'product' in url and any(size in url for size in sizes):
-            print(url)
+    counter = 1
+    
+    while True:
+        
+        scroll(driver) #Uses the scroll function from Scroll.py to scroll down the page
+
+        WebDriverWait(driver, 10).until(
+            lambda d: d.find_elements(By.XPATH, "//a[@href]")
+        )
+        
+        # Collecting URLs
+        product_urls = [elem.get_attribute("href") for elem in driver.find_elements(By.XPATH, "//a[@href]")] 
+        # elem is the element in the list of elements, get_attribute("href") is the attribute of the element we want to get (href)
+        # href is the link to the product page
+        for url in product_urls:
+            if 'product' in url and any(size in url for size in sizes):
+                print(url)
+                
+        try:
+            page_elements = WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@aria-label, 'Page ')]"))
+            )
+        
+            page_numbers = [int(el.get_attribute("aria-label").split(" ")[1]) for el in page_elements]
+            page_numbers.sort()
+            page_button_xpath = f"//a[@aria-label='Page {page_numbers[counter]}']"
+            page_button = driver.find_element(By.XPATH, page_button_xpath)
+            page_button.click()
+            # Wait for search results to load (if necessary)
+            counter += 1
+        except: 
+            break
+        

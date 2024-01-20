@@ -17,7 +17,12 @@ def SideBar(driver):
     
     page_numbers = [int(el.get_attribute("aria-label").split(" ")[1]) for el in page_elements]
     page_numbers.sort()
+    counter = 2
     
+    print(page_elements)
     
-    sales_button = driver.find_element(By.XPATH, "//a[@aria-label='Page 2']")
-    sales_button.click()
+    if counter <= len(page_numbers):
+        sales_button_xpath = f"//a[@aria-label='Page {counter}']"
+        sales_button = driver.find_element(By.XPATH, sales_button_xpath)
+        sales_button.click()
+        counter += 1
