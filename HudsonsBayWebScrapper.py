@@ -13,7 +13,7 @@ import time
 # Open the website in a new browser window
 url = "https://www.thebay.com/" # The website we are going to scrape
 driver = webdriver.Chrome()
-driver.get(url)
+driver.get(url) #
 driver.implicitly_wait(10) # this lets webdriver wait 10 seconds for the website to load
 driver.maximize_window() # Maximize the browser window
 
@@ -70,4 +70,6 @@ for brand in brands:
             counter += 1
         except: 
             break
-        
+
+#Add an error logging system like if the product isn't found
+#Make it more dynamic so you can open multiple chrome instances at once
