@@ -10,3 +10,7 @@ from SideBar import SideBar
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+from HudsonsBayWebScrapper import link_list
+driver = webdriver.Chrome()
+
+sale_percentage = driver.find_element(By.CLASS_NAME, 'save-percentage')

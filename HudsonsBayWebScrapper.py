@@ -40,6 +40,7 @@ for brand in brands:
     
     counter = 1
     
+    link_list = []  # List to store the links to the product pages
     while True:
         
         scroll(driver) #Uses the scroll function from Scroll.py to scroll down the page
@@ -55,6 +56,7 @@ for brand in brands:
         for url in product_urls:
             if 'product' in url and any(size in url for size in sizes):
                 print(url)
+                link_list.append(url)
                 
         try:
             page_elements = WebDriverWait(driver, 10).until(
@@ -70,6 +72,9 @@ for brand in brands:
             counter += 1
         except: 
             break
+
+
+#<span class="save-percentage">(34% OFF)</span>
 
 #Add an error logging system like if the product isn't found
 #Make it more dynamic so you can open multiple chrome instances at once
