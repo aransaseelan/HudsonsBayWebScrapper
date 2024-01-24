@@ -20,7 +20,7 @@ driver.implicitly_wait(10) # this lets webdriver wait 10 seconds for the website
 driver.maximize_window() # Maximize the browser window
 
 #Brands I would want to search for
-brands = ["Nike", "Lacoste", "Polo Ralph Lauren"]
+brands = ["Nike Sale Mens", "Lacoste", "Polo Ralph Lauren"]
 
 #Sizes I would want to search for
 sizes = ["Large", "X-Large"]

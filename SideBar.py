@@ -15,14 +15,24 @@ max_page = 0
 def SideBar(driver, run_once_flag):
     global counter  # Declare counter as global to modify it
     global max_page  # Declare max_page as global to access and modify it
+    print(run_once_flag)
     if run_once_flag:
         page_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//a[contains(@aria-label, 'Total pages: ')]"))
         )
         # Extract the total number of pages
         aria_label = page_element.get_attribute("aria-label")
-        max_page = int(aria_label.split(": ")[1]) if "Total pages: " in aria_label else 0
+        max_page = int(aria_label.split(": ")[1]) if "Total pages: " in aria_label else 0 
+        #Splits the string into a list of strings, using ":" as the separator
         run_once_flag = False
+    
+        if max_page == 0: #Some dont have a total pages since theres less or equal to three pages
+            page_elements = WebDriverWait(driver, 10).until(
+                EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@aria-label, 'Page ')]"))
+            )
+            page_numbers = [int(el.get_attribute("aria-label").split(" ")[1]) for el in page_elements]
+            page_numbers.sort()
+            max_page = page_numbers[-1]
     
     print(max_page)
     print(counter)
