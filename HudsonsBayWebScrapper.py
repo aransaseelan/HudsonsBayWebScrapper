@@ -10,6 +10,8 @@ from SideBar import SideBar
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+
+
 # Open the website in a new browser window
 url = "https://www.thebay.com/" # The website we are going to scrape
 driver = webdriver.Chrome()
@@ -22,6 +24,7 @@ brands = ["Nike", "Lacoste", "Polo Ralph Lauren"]
 
 #Sizes I would want to search for
 sizes = ["Large", "X-Large"]
+
 
 for brand in brands:
     # Find the textbox by its HTML attribute (e.g., ID or name) and enter text
@@ -37,10 +40,12 @@ for brand in brands:
     WebDriverWait(driver, 10).until(
         lambda d: d.find_elements(By.XPATH, "//a[@href]")
     )
-    
-    counter = 1
-    
+        
     link_list = []  # List to store the links to the product pages
+    # Wait for the page element that contains the total number of pages
+    
+    run_once_flag = True
+    
     while True:
         
         scroll(driver) #Uses the scroll function from Scroll.py to scroll down the page
@@ -57,22 +62,12 @@ for brand in brands:
             if 'product' in url and any(size in url for size in sizes):
                 print(url)
                 link_list.append(url)
-                
-        try:
-            page_elements = WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@aria-label, 'Page ')]"))
-            )
-        
-            page_numbers = [int(el.get_attribute("aria-label").split(" ")[1]) for el in page_elements]
-            page_numbers.sort()
-            page_button_xpath = f"//a[@aria-label='Page {page_numbers[counter]}']"
-            page_button = driver.find_element(By.XPATH, page_button_xpath)
-            page_button.click()
-            # Wait for search results to load (if necessary)
-            counter += 1
-        except: 
-            break
 
+        try:
+           SideBar(driver, run_once_flag)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            break
 
 #<span class="save-percentage">(34% OFF)</span>
 

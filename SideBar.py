@@ -9,20 +9,27 @@ import time
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def SideBar(driver):
+counter = 2
+max_page = 0
+
+def SideBar(driver, run_once_flag):
+    global counter  # Declare counter as global to modify it
+    global max_page  # Declare max_page as global to access and modify it
+    if run_once_flag:
+        page_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//a[contains(@aria-label, 'Total pages: ')]"))
+        )
+        # Extract the total number of pages
+        aria_label = page_element.get_attribute("aria-label")
+        max_page = int(aria_label.split(": ")[1]) if "Total pages: " in aria_label else 0
+        run_once_flag = False
     
-    page_elements = WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@aria-label, 'Page ')]"))
-    )
-    
-    page_numbers = [int(el.get_attribute("aria-label").split(" ")[1]) for el in page_elements]
-    page_numbers.sort()
-    counter = 2
-    
-    print(page_elements)
-    
-    if counter <= len(page_numbers):
+    print(max_page)
+    print(counter)
+    if counter <= max_page:
         sales_button_xpath = f"//a[@aria-label='Page {counter}']"
         sales_button = driver.find_element(By.XPATH, sales_button_xpath)
-        sales_button.click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, sales_button_xpath))
+        ).click()
         counter += 1
