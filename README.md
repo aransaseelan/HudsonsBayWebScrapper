@@ -1,10 +1,15 @@
-The Hudson's Bay Web Scraper is a Python tool designed to automate the process of finding products from the Hudson's Bay online store. 
-It searches for items based on specified brand and size, and filters results by available discounts. 
-This tool is particularly useful for users looking to quickly find the best deals on Hudson's Bay without manually browsing the site.
+## What is the Hudsons Bay Web Scrapper
 
-Features 
+The Hudson Bay web scrapper will be a Python, Selenium-based web crawler looking for discount and clearance sales. 
+You can add your favourite brands and see if they reach a certain discount threshold. If they do, you will be pinged, and the information will be added to a database.  
+My goal is to be able to input some keywords and check if any of those keywords match the item and discount you are looking for.
 
-1. Brand Search: Specify the brand you're interested in, and the scraper will find all products under that brand.
-2. Size Filtering: Enter the size you're looking for, and the scraper will filter out products that are not available in your size.
-3. Discount Detection: The tool detects and prioritizes products that have discounts, ensuring you get the best deals.
-4. Link Generation: Generates direct links to the product pages for easy access.
+## Use case and Benefit of this product 
+
+People will be able to get their products when they're at the best price on Hudson Bay. 
+
+## Bot Protections
+
+Hudson's Bay's bot protection doesn't seem too strong, as I was able to make a scrapper with Python and Selenium without trying to bypass any of their anti-bot measures. 
+The use of proxies is recommended as Hudsons Bay is likely to ban IPs that are scrapping from their website. 
+It seems like their products are being put on the server side, so I couldn't find any apis that I could call, which would have made this much more efficient.
